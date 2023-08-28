@@ -1,6 +1,8 @@
 package coupang;
 
-public class Seller extends Person {
+import java.io.Serializable;
+
+public class Seller extends Person implements Serializable {
 	private String company;
 	
 	public Seller(String name, String residentNumber, int phone, String address, String company ) {

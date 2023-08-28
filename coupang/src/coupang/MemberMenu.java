@@ -13,9 +13,12 @@ public class MemberMenu {
 			System.out.println("2. 회원 관리");
 			System.out.println("3. 회원 삭제");
 			System.out.println("4. 회원 정보");
+			System.out.println("5. 회원 정보 파일로 저장");
 			System.out.println("9. 종료");
 			System.out.println("메뉴번호 : ");
+			try{
 			int num = sc.nextInt();
+			sc.nextLine();
 			switch(num){
 
 				case 1 :{	
@@ -48,11 +51,13 @@ public class MemberMenu {
 						System.out.println("주소 : ");
 						String address = sc.next();			
 						mc.insertCustomer(name, residentNumber, phone, address);
+
 					}
 				}break;
 				case 2 :{
 					System.out.println("회원 타입 (1.판매자 2.구매자) : ");
 					int num1 = sc.nextInt();
+					sc.nextLine();
 					if (num1 == 1) {
 						if(!mc.checkSeller()) {							
 							continue;
@@ -70,6 +75,7 @@ public class MemberMenu {
 					System.out.println("9. 메인메뉴로");
 					System.out.println("메뉴번호 : ");
 					int num2 = sc.nextInt();
+					sc.nextLine();
 					switch(num2) {
 						case 1 :{
 							System.out.print("수정 할 회사이름을 입력하세요 : ");
@@ -112,6 +118,7 @@ public class MemberMenu {
 					System.out.println("9. 메인메뉴로");
 					System.out.println("수정 할 메뉴번호 : ");
 					int num2 = sc.nextInt();
+					sc.nextLine();
 					switch(num2) {
 						case 1 :{
 							System.out.print("수정 할 핸드폰 번호를 입력하세요 : ");
@@ -136,6 +143,7 @@ public class MemberMenu {
 				}case 3 :{
 					System.out.println("삭제 할 회원의 타입(1.판매자 2.구매자)");
 					int num1 = sc.nextInt();
+					sc.nextLine();
 					if (num1 == 1) {
 						if(!mc.checkSeller()) {
 							continue;
@@ -165,6 +173,7 @@ public class MemberMenu {
 					System.out.println("2. 회원 검색");
 					System.out.println("메뉴 번호 : ");
 					int num1 = sc.nextInt();
+					sc.nextLine();
 					switch(num1) {
 						case 1 :{
 							mc.printMemberAll();
@@ -179,12 +188,32 @@ public class MemberMenu {
 					}
 					
 				}break;
+				case 5 :{
+					System.out.println("저장할 회원타입(1.판매자 2.구매자)");
+					int num4 = sc.nextInt();
+					sc.nextLine();
+					switch(num4) {
+						case 1 :{
+							mc.saveSellerToFile(mc.seller);
+						}break;
+						case 2 :{
+							
+						}
+							mc.saveCustomerToFile(mc.customer);
+					}
+					
+				}break;
 				case 9 :{
 					isTrue = false;
 				}break;
 				default :{
 					System.out.println("잘 못 입력하셨습니다");
 				}
+			}
+			}
+			catch( InputMismatchException x) {
+				System.out.println("잘 못 입력하셨습니다 숫자를 입력해주세요");
+				sc.next();
 			}
 		}
 	}

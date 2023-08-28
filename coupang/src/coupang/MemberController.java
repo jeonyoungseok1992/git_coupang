@@ -1,5 +1,6 @@
 package coupang;
 import java.util.*;
+import java.io.*;
 
 public class MemberController {
 
@@ -191,5 +192,59 @@ public class MemberController {
 			}
 		}
 		}
+	}
+	
+	public void saveCustomerToFile(ArrayList<Customer> customerlist) {
+		File f = new File("구매자 파일.txt");
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	
+		try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))){			
+			for(Customer cu : customerlist) {
+			bfw.write(cu.inform());
+			bfw.newLine();
+			}
+			System.out.println("저장완료");
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	
+	}
+	public void saveSellerToFile(ArrayList<Seller> sellerlist) {
+		File f2 = new File("판매자 파일.txt");
+		try {
+			f2.createNewFile();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	//------------외계어 나옴---------------------------
+//		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f2))){			
+//			for(Seller se : sellerlist) {
+//			oos.writeObject(se);
+//			}
+//			System.out.println("저장완료");
+//		} catch (IOException e) {
+//			
+//			e.printStackTrace();
+//		}
+		
+		 try (BufferedWriter writer = new BufferedWriter(new FileWriter(f2))) {
+		        for (Seller se : sellerlist) {
+		            writer.write(se.inform());
+		            writer.newLine();
+		        }
+		        System.out.println("파일에 저장완료");
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		
+
+	
 	}
 }
