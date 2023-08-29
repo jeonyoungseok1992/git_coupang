@@ -17,7 +17,7 @@ public class MemberMenu {
 			System.out.println("9. 종료");
 			System.out.println("메뉴번호 : ");
 			try{
-			int num = sc.nextInt();
+			int num = sc.nextInt();			
 			sc.nextLine();
 			switch(num){
 
@@ -152,7 +152,12 @@ public class MemberMenu {
 						String name = sc.next();
 						System.out.println("주민번호 : ");
 						String residentNumber = sc.next();
-						mc.deleteSeller(name, residentNumber);
+						System.out.println("정말 삭제 하시겠습니까? (y/n)");
+						String str = sc.next();
+						if(str.equalsIgnoreCase("Y"))
+							mc.deleteSeller(name, residentNumber);
+						else
+							System.out.println("삭제를 취소합니다");
 					}
 					else if (num1 == 2) {
 						if(!mc.checkCustomer()) {
@@ -212,9 +217,11 @@ public class MemberMenu {
 			}
 			}
 			catch( InputMismatchException x) {
+				x.printStackTrace();
 				System.out.println("잘 못 입력하셨습니다 숫자를 입력해주세요");
-				sc.next();
+				sc.nextLine();
 			}
+
 		}
 	}
 }
