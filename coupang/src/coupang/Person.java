@@ -17,6 +17,12 @@ public class Person {
 		
 	}
 	
+	public Person(String name, String residentNumber) {
+		this.name = name;
+		this.residentNumber = residentNumber;
+		
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}

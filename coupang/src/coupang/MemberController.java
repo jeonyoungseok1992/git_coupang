@@ -5,48 +5,47 @@ import java.io.*;
 public class MemberController {
 
 	ArrayList<Seller> seller = new ArrayList<>(); 
-	ArrayList<Customer> customer = new ArrayList<>(); 
-	//ArrayList<Person> person = new ArrayList<>(); 
+	ArrayList<Member> member = new ArrayList<>(); 
 
-		
-	public void insertSeller(String name, String residentNumber, int phone, String address, String company) {
-			Seller se = new Seller(name, residentNumber, phone, address, company);
-			seller.add(se);
-			System.out.println("등록 완료");
-	}
-	public void insertCustomer(String name, String residentNumber, int phone, String address) {
-		Customer cu = new Customer(name, residentNumber, phone, address);
-		customer.add(cu);
-		System.out.println("등록 완료");		
+	
+	//회원가입 시 기본정보 입력 후 더 입력 시 
+	public void UpgradeSeller(String sellerId, String sellerPwd, String name, String residentNumber, int phone, String address, String company) {
+		Seller se = new Seller(sellerId, sellerPwd, name, residentNumber, phone, address, company);
+		seller.add(se);
+		System.out.println("등록 완료");
+}
+
+	//기본 회원가입	
+	public void InsertMember(String name, String residentNumber, String sellerId, String sellerPwd) {
+		Member me = new Member(sellerId, sellerPwd, name, residentNumber);
+		member.add(me);
+		System.out.println("등록 완료");
 	}
 	
-	public Boolean overlapSeller(String name, String residentNumber) {
+	
+	public Boolean overlapSeller(String id, String residentNumber) {
 		Boolean isTrue = true;
 		if(!seller.isEmpty()) {
 			for(Seller se : seller) {
-				if (se.getName().equals(name) && se.getResidentNumber().equals(residentNumber))	{	
-					System.out.println("등록 되어 있는 회원입니다");	
+				if (se.getSellerId().equals(id) || se.getResidentNumber().equals(residentNumber))	{	
+					System.out.println("이미 판매자로 등록 되어 있는 회원입니다");	
 					isTrue = false;
 					break;		
 					
 			}
 			}
 		}
-		else if(seller.isEmpty()) {
-			isTrue = true;
-		}
-			
-			
+						
 			
 		
 			return isTrue;
 	}
 	
-	public Boolean overlapCustomer(String name, String residentNumber) {	
+	public Boolean overlapMember(String name, String residentNumber) {	
 		Boolean isTrue = true;
-		if (!customer.isEmpty()) {
-			for(Customer cu : customer) {
-				if (cu.getName().equals(name) && cu.getResidentNumber().equals(residentNumber))	{	
+		if (!member.isEmpty()) {
+			for(Member me : member) {
+				if (me.getName().equals(name) && me.getResidentNumber().equals(residentNumber))	{	
 					System.out.println("등록 되어 있는 회원입니다");					
 					break;						
 				}
@@ -60,19 +59,17 @@ public class MemberController {
 	public Boolean checkSeller() {
 		Boolean isTrue = true;
 		if(seller.isEmpty()) {
-			System.out.println("등록 된 회원이 없습니다");
+			//System.out.println("판매자 권한이 없습니다");
 			isTrue = false;
-			return isTrue;
 		}
-		else 
+
 
 		return isTrue;
 	}
 	
-	public Boolean checkCustomer() {	
+	public Boolean checkMember() {	
 		Boolean isTrue = true;
-		if(customer.isEmpty()) {
-			System.out.println("등록 된 회원이 없습니다");
+		if(member.isEmpty()) {
 			isTrue = false;
 			return isTrue;
 		}
@@ -80,38 +77,31 @@ public class MemberController {
 		return isTrue;
 	}
 	
-	public void modifySellerCompany(String name, String residentNumber, String company) {
+	public void modifySellerCompany(String id, String company) {
 		for(Seller se : seller) {
-			if(se.getName().equals(name) && se.getResidentNumber().equals(residentNumber)) {				
+			if(se.getSellerId().equals(id)) {				
 				se.setCompany(company);
+				System.out.println("회사이름 수정 완료");
+				break;
 			}
 		}
 	}
-	public void modifySellerPhone(String name, String residentNumber, int phone) {
-		for(Seller se : seller) {
-			if(se.getName().equals(name) && se.getResidentNumber().equals(residentNumber)) {				
-				se.setPhone(phone);
+
+	public void modifyMemberPhone(String mid, int phone) {
+		for(Member me : member) {
+			if(me.getMemberId().equals(mid)) {				
+				me.setPhone(phone);
+				System.out.println("번호 수정 완료");
+				break;
 			}
 		}
 	}
-	public void modifySellerAddress(String name, String residentNumber, String address) {
-		for(Seller se : seller) {
-			if(se.getName().equals(name) && se.getResidentNumber().equals(residentNumber)) {				
-				se.setAddress(address);
-			}
-		}
-	}
-	public void modifyCustomerPhone(String name, String residentNumber, int phone) {
-		for(Customer cu : customer) {
-			if(cu.getName().equals(name) && cu.getResidentNumber().equals(residentNumber)) {				
-				cu.setPhone(phone);
-			}
-		}
-	}
-	public void modifyCustomerAddress(String name, String residentNumber, String address) {
-		for(Customer cu : customer) {
-			if(cu.getName().equals(name) && cu.getResidentNumber().equals(residentNumber)) {				
-				cu.setAddress(address);
+	public void modifyMemberAddress(String mid, String address) {
+		for(Member me : member) {
+			if(me.getMemberId().equals(mid)) {				
+				me.setAddress(address);
+				System.out.println("주소 수정 완료");
+				break;
 			}
 		}
 	}
@@ -119,37 +109,31 @@ public class MemberController {
 
 
 	
-	public void deleteSeller(String name, String residentNumber) {		
-			if(seller.isEmpty()) 
-				System.out.println("등록된 회원이 없습니다");	
-			else if(!seller.isEmpty()) {				
-				for(int i = 0 ; i < seller.size() ; i++) {
-					if(seller.get(i).getName().equals(name)&& seller.get(i).getResidentNumber().equals(residentNumber)) {
-					seller.remove(i);
-					System.out.println("판매자 회원삭제 완료되었습니다");
-					break;					
-					}
-					else 
-						System.out.println("해당 정보로 등록된 회원이 없습니다");
-				}
-			}
-		
-	}
 	
 	
-	public void deleteCustomer(String name, String residentNumber) {
-		if(customer.isEmpty()) 
+	public void deleteMember(String id) {
+		if(member.isEmpty() && seller.isEmpty()) {
 			System.out.println("등록된 회원이 없습니다");	
-		else if(!customer.isEmpty()) {				
-			for(int i = 0 ; i < customer.size() ; i++) {
-				if(customer.get(i).getName().equals(name)&& customer.get(i).getResidentNumber().equals(residentNumber)) {
-					customer.remove(i);
-				System.out.println("구매자 회원삭제 완료되었습니다");
+			return;
+		}
+		else if(!member.isEmpty()) {				
+			for(int i = 0 ; i < member.size() ; i++) {
+				if(member.get(i).getMemberId().equals(id)) {
+					member.remove(i);
+				System.out.println("회원삭제 완료되었습니다");
 				break;
 				}
 				else
 					System.out.println("해당 정보로 등록된 회원이 없습니다");
 			}
+		}
+		else if(!seller.isEmpty()) {
+			for(Seller se : seller) {
+				if(se.getSellerId().equals(id)) {
+					seller.remove(se);
+				}
+			}
+			
 		}
 	
 }
@@ -157,45 +141,48 @@ public class MemberController {
 
 	
 	public void printMemberAll() {
-		if (customer.isEmpty() && seller.isEmpty()) {
+		if (member.isEmpty() && seller.isEmpty()) {
 			System.out.println("등록 된 정보가 없습니다");
 			return;
 		}
-		if(!customer.isEmpty()) {
-		for(Customer cu : customer) 			
-				System.out.println(cu.inform());
-		}
-		if(!seller.isEmpty()) {
-		for(Seller se : seller) 		
+		else{
+			for(Seller se : seller)
 				System.out.println(se.inform());
+			
+			for(Member me : member) 
+				System.out.println(me.inform());
+													
+			}
+		}
+				
+
+	
+	public void printMemberOne(String id) {
+		if(member.isEmpty() && seller.isEmpty()) {
+			System.out.println("등록 되지 않은 회원입니다");
+			return;
+		}
+		else{
+			for(Seller se : seller) {
+					if(se.getSellerId().equals(id)) {
+						System.out.println(se.inform());
+						break;
+			}
+		}
+			for(Member me : member) {
+				if(me.getMemberId().equals(id)) {
+					System.out.println(me.inform());
+					break;
+		}
+				
+			}
+				
 		}
 
 	}
 	
-	public void printMemberOne(String name, String residentNumber) {
-		if(seller.isEmpty() && customer.isEmpty()) {
-			System.out.println("등록 되지 않은 회원입니다");
-			return;
-		}
-		if(!seller.isEmpty()) {
-		for(Seller se : seller) {
-			if(!seller.isEmpty() &&se.getName().equals(name) && se.getResidentNumber().equals(residentNumber)) {								
-				System.out.println(se.inform());
-			}
-		}
-		}
-		if(!customer.isEmpty()) {
-		for(Customer cu : customer) {
-			if(!customer.isEmpty() && cu.getName().equals(name) && cu.getResidentNumber().equals(residentNumber)) {				
-				System.out.println(cu.inform());
-				
-			}
-		}
-		}
-	}
-	
-	public void saveCustomerToFile(ArrayList<Customer> customerlist) {
-		File f = new File("구매자 파일.txt");
+	public void saveMemberToFile(ArrayList<Member> list) {
+		File f = new File("일반회원 파일.txt");
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
@@ -204,7 +191,7 @@ public class MemberController {
 		}
 	
 		try (BufferedWriter bfw = new BufferedWriter(new FileWriter(f))){			
-			for(Customer cu : customerlist) {
+			for(Member cu : list) {
 			bfw.write(cu.inform());
 			bfw.newLine();
 			}
@@ -247,4 +234,6 @@ public class MemberController {
 
 	
 	}
+	
+
 }
