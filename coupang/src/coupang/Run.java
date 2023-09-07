@@ -8,7 +8,7 @@ public class Run {
 		MemberMenu run = new MemberMenu();
 		
 		run.MainMenu();
-
+		//됨??
 	}
 
 }
